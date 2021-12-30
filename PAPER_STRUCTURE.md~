@@ -1,0 +1,13 @@
+# Technical Paper Structure: 
+
+## Title: High-Performance Machine-Learning for FinTec
+
+## Structure
+
+1. Introduction
+2. Context and Challenges for ML in FinTec:
+3. A High-performance Platform: invesdwin:
+   - Overview structure with discussion of main components
+   - ML techniques used: GA; specifics about strategy selection and mutation
+   - Expression language
+   - Data streams

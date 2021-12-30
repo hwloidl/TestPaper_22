@@ -1,0 +1,223 @@
+%% OPTIONEN
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% getrenntes Anhangverzeichnis
+%% siehe http://www.komascript.de/node/458
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter% --> De-TeX-FAQ
+\newcommand*{\maintoc}{% Hauptinhaltsverzeichnis
+  \begingroup
+    \@fileswfalse% kein neues Verzeichnis öffnen
+    \renewcommand*{\appendixattoc}{% Trennanweisung im Inhaltsverzeichnis
+      \value{tocdepth}=-10000 % lokal tocdepth auf sehr kleinen Wert setzen
+    }%
+    \tableofcontents% Verzeichnis ausgeben
+  \endgroup
+}
+\newcommand*{\appendixtoc}{% Anhangsinhaltsverzeichnis
+  \begingroup
+    \edef\@alltocdepth{\the\value{tocdepth}}% tocdepth merken
+    \setcounter{tocdepth}{-10000}% Keine Verzeichniseinträge
+    \renewcommand*{\contentsname}{% Verzeichnisname ändern
+      Anhangverzeichnis}%
+    \renewcommand*{\appendixattoc}{% Trennanweisung im Inhaltsverzeichnis
+      \setcounter{tocdepth}{\@alltocdepth}% tocdepth wiederherstellen
+    }%
+    \tableofcontents% Verzeichnis ausgeben
+    \setcounter{tocdepth}{\@alltocdepth}% tocdepth wiederherstellen
+  \endgroup
+}
+\newcommand*{\appendixattoc}{% Trennanweisung im Inhaltsverzeichnis
+}
+\g@addto@macro\appendix{% \appendix erweitern
+  %\if@openright\cleardoublepage\else\clearpage\fi% Neue Seite
+  \clearpage
+	\phantomsection
+  \addcontentsline{toc}{section}{\appendixname}% Eintrag ins Hauptverzeichnis
+  \addtocontents{toc}{\protect\appendixattoc}% Trennanweisung in die toc-Datei
+}
+\makeatother
+
+\newcommand*{\appendixmore}{%
+	\renewcommand*{\othersectionlevelsformat}[1]{%
+		\ifthenelse{\equal{##1}{section}}{%
+			\appendixname~}{}%
+	\csname the##1\endcsname:\enskip}
+		\renewcommand*{\sectionmarkformat}{%
+			\appendixname~\thesection:\enskip}
+}
+
+% Abkürzungsverzeichnis und Glossar
+\usepackage[english,intoc,refpage]{nomencl}
+\renewcommand*\pagedeclaration[1]{~\textit{(Page\,#1)}}
+%\renewcommand{\nomname}{Nomenclature}
+\setlength{\nomlabelwidth}{.25\hsize}
+\renewcommand{\nomlabel}[1]{#1 \dotfill}
+\setlength{\nomitemsep}{-\parsep}
+\makenomenclature
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages für Grafiken & Abbildungen %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifpdfoutput{ %%Einbindung von Grafiken mittels \includegraphics{datei}
+	\usepackage[pdftex,dvipsnames,usenames]{color}
+	\usepackage[pdftex]{graphicx} %%Grafiken in pdfLaTeX
+} {
+	\usepackage[usenames]{color}
+	\usepackage[dvips]{graphicx} %%Grafiken und normales LaTeX
+%	\usepackage[draft]{graphicx} %%NUR den Platz für Grafiken und normales LaTeX
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Packages für Mathe Formeln %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+
+%\usepackage[hyperref]{ntheorem}
+%\theoremstyle{plain}
+%\theoremsymbol{\ensuremath{\clubsuit}}
+%\theoremseparator{.}
+\newtheorem{thm}{Definition}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Andere Packages %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{booktabs} 		% Schönere Tabellen
+\usepackage[english]{varioref} %Erweiterte Querverweise
+\usepackage{paralist}	%Erweiterte Möglichkeiten für Aufzählungen
+\usepackage{nonfloat} %Erweiterte Möglichkeiten mit Gleitobjekten (Tabellen/Grafiken) 
+\usepackage{listliketab,tabularx} %%komfortablere Tabellen
+\usepackage{longtable} %%Für Tabellen, die eine Seite überschreiten
+\usepackage{ltxtable}	%komfortable Tabellen über mehrere Seiten (tabularx kombiniert longtable) \usepackage{colortbl} %% Farben in Tabellen
+\usepackage{multicol}
+\usepackage{url}
+%\usepackage{titlesec} %% Aussehen von Paragraph anpassen
+%\titlelabel{\hspace{2em}\thetitle.\quad}
+\usepackage[percent]{overpic} %%Text in Grafiken einfügen
+\usepackage{eurosym}
+
+\usepackage{footnote}
+\makesavenoteenv{tabular}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Times New Roman %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{mathptmx}
+
+%\usepackage{titlesec}
+
+%\titleformat{\section}{\bfseries}
+%\titleformat{\subsection}{\bfseries}
+%\titleformat{\subsubsection}{\bfseries}
+%\titleformat{\paragraph}{\bfseries}
+%\titleformat{\subparagraph}{\bfseries}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%Aussehen von \paragraph umdefinieren
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\titleformat{\paragraph}[hang]{\sectfont}{\theparagraph}{1em}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%Margins: wichtig für FHDW layout
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage{vmargin}			% Seitenformatierung
+%\setpapersize{A4}
+%\setmarginsrb{40mm}{25mm}{20mm}{25mm}%
+%						{12pt}{11mm}{9pt}{7mm}
+						
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%Kopf und Fusszeilen definieren
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[automark]{scrlayer-scrpage}
+\usepackage{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\clearscrheadfoot
+%\ohead{\pagemark}
+%\ihead{\headmark}
+%\ifoot{Created by Edwin Stang}
+\ofoot{\pagemark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Zeilenabstand %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{setspace}
+%\singlespacing        %% 1-zeilig (Standard)
+\setstretch{1.125}
+%\onehalfspacing       %% 1,5-zeilig
+%\doublespacing        %% 2-zeilig
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hyperlinks und Thumbnails
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[pdfpagelabels]{hyperref}
+\hypersetup{
+	pdfstartview={FitH}, % start pdf view with option <fit horizontal>
+	colorlinks=true, % Einfaerbung von Verknupfungen
+	linktocpage=true, % Seitennummer als Link im Inhaltsverzeichnis
+	breaklinks=true,	% Links werden umbrochen und jeder Link verweist auf das selbe Ziel
+	pdfpagemode=UseThumbs, % Anzeige der Piktogramme
+	pdfdisplaydoctitle=true, % Titel in der Acrobat Titelleiste
+	bookmarksopen=true, % Anzeige aller Ebenen
+	bookmarksnumbered=true, % Anzeige der Abschnittsnummern
+	pdfstartpage={1}, % Startseite
+	pdftitle={A Simple Expression Language for Automating Strategy Development Processes}, pdfsubject={Technical Report}, pdfauthor={Edwin Stang}, pdfproducer={LaTeX},
+%   linkcolor=Sepia,    % Farbe für Links
+%   citecolor=CadetBlue,        % Farbe für Verweise
+%   urlcolor=RoyalBlue
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=black
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Code Listings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{listings}
+	
+\lstdefinelanguage{BNF}{
+  sensitive = true,
+  otherkeywords = {-,>,|,',`,?,(,)},
+  morestring = [b][keywordstyle]',
+  morecomment = [l]{\#},
+}
+	\lstset{
+	extendedchars=true,
+	breaklines=true,
+	basicstyle=\small,
+	breakatwhitespace=true,
+	emptylines=2,
+	float=ht,
+	xleftmargin=25pt,
+	language=BNF
+	}
+	
+	
+\renewcommand{\lstlistlistingname}{List of Source Code}
+\renewcommand{\lstlistingname}{Source Code}
+	
+% WORKAROUND, damit lstlistoflistings funktioniert:
+% Quelle: http://www.komascript.de/node/477
+%
+% \makeatletter% --> De-TeX-FAQ
+% \renewcommand*{\lstlistoflistings}{%
+% \begingroup
+% \if@twocolumn
+% \@restonecoltrue\onecolumn
+% \else
+% \@restonecolfalse
+% \fi
+% \lol@heading
+% \setlength{\parskip}{\z@}%
+% \setlength{\parindent}{\z@}%
+% \setlength{\parfillskip}{\z@ \@plus 1fil}%
+% \@starttoc{lol}%
+% \if@restonecol\twocolumn\fi
+% \endgroup
+% }
+% \makeatother% --> \makeatletter

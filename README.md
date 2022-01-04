@@ -2,6 +2,8 @@
 
 ## HWL comments
 
+**NB**: This repo is now linked with overleaf which should act as front end for developing the paper.
+
 **HWL**: I've for now added my comments (below), tagged with this label, in the mark-down file
 
 I think we should structure the discussion into 3 areas of performance improvement
